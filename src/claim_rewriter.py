@@ -566,10 +566,13 @@ with open("generated.sh","w+") as f:
         f.write("\n")
         f.write("bash scripts/run_oracle.sh {0} unchanged.{1}.jsonl".format(out_dir_name, rule.name()))
         f.write("\n")
+
+    for rule in rewriter.replacement_rules:
         f.write("bash scripts/run_full.sh {0} changed.{1}.jsonl".format(out_dir_name, rule.name()))
         f.write("\n")
         f.write("bash scripts/run_full.sh {0} unchanged.{1}.jsonl".format(out_dir_name, rule.name()))
         f.write("\n")
+
     for rule in rewriter.replacement_rules:
         f.write("echo {0} changed.oracle.{1} >> oracle_scores".format(out_dir_name, rule.name()))
         f.write("\n")
