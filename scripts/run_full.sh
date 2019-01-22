@@ -15,7 +15,7 @@ python -m allennlp.run predict \
     model.tar.gz \
     data/model-specific/$MODEL/full/$1/$2 \
     --output-file data/predictions/$MODEL/full/$1/$2 \
-    --predictor fever-oracle \
+    --predictor fever \
     --include-package fever.reader \
     --cuda-device -1 \
     --silent
