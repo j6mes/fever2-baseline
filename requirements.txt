@@ -2,3 +2,5 @@ fever-allennlp-reader
 fever-scorer
 prettytable
 git+ssh://git@github.com/j6mes/fever-allennlp@master
+sklearn
+tqdm
