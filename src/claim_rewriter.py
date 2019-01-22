@@ -560,24 +560,35 @@ with open(args.in_file) as f:
     out_dir_name = args.out_dir.split("/")[-1]
 
 
-with open("generated.sh") as f:
+with open("generated.sh","w+") as f:
     for rule in rewriter.replacement_rules:
         f.write("bash scripts/run_oracle.sh {0} changed.{1}.jsonl".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_oracle.sh {0} unchanged.{1}.jsonl".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_full.sh {0} changed.{1}.jsonl".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_full.sh {0} unchanged.{1}.jsonl".format(out_dir_name, rule.name()))
-
+        f.write("\n")
     for rule in rewriter.replacement_rules:
         f.write("echo {0} changed.oracle.{1} >> oracle_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_scoring_oracle.sh {0} changed.{1}.jsonl >> oracle_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("echo {0} unchanged.oracle.{1} >> oracle_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_scoring_oracle.sh {0} unchanged.{1}.jsonl >> oracle_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
 
     for rule in rewriter.replacement_rules:
         f.write("echo {0} changed.full.{1} >> full_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_scoring_full.sh {0} changed.{1}.jsonl >> full_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("echo {0} unchanged.full.{1} >> full_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
         f.write("bash scripts/run_scoring_full.sh {0} unchanged.{1}.jsonl >> full_scores".format(out_dir_name, rule.name()))
+        f.write("\n")
 
 
 
