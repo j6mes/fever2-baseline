@@ -731,7 +731,7 @@ with open(args.in_file) as f:
     out_dir_name = args.out_dir.split("/")[-1]
 
 
-with open("generated.sh","w+") as f:
+with open("generated3.sh","w+") as f:
     for rule in rewriter.replacement_rules:
         f.write("bash scripts/run_oracle.sh {0} changed.{1}.jsonl".format(out_dir_name, rule.name()))
         f.write("\n")
