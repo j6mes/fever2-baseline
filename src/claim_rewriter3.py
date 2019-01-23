@@ -61,16 +61,16 @@ class IsAReplacementRule1(ReplacementRule):
 
 class IsAReplacementRule2(ReplacementRule):
     def _process(self, instance):
-        matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
-        matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
+        matches1 = re.match(r"(.+) is (?:a|an) (.+)", instance["claim"])
 
         if instance["label"] == "NOT ENOUGH INFO":
             return None
 
-        if matches1 is None and matches2 is None:
+        if matches1 is None:
             return None
 
-        new_claim = "There exists no {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+
+        new_claim = "There exists no {0} called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
 
         instance["claim"] = new_claim
         instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
@@ -188,16 +188,15 @@ class WasAReplacementRule1(ReplacementRule):
 
 class WasAReplacementRule2(ReplacementRule):
     def _process(self, instance):
-        matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
-        matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+        matches1 = re.match(r"(.+) was (?:a|an) (.+)", instance["claim"])
 
         if instance["label"] == "NOT ENOUGH INFO":
             return None
 
-        if matches1 is None and matches2 is None:
+        if matches1 is None:
             return None
 
-        new_claim = "There existed no {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+        new_claim = "There existed no {0} called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
 
         instance["claim"] = new_claim
         instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
