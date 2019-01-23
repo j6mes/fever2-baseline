@@ -37,40 +37,25 @@ class IsAReplacementRule1(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There exists a {0} called {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
+            new_claim = "There does not exist a {0} called {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
         else:
-            new_claim = "There exists an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There does not exist an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
-        return "there.exists.a.called"
-
-
-class IsAReplacementRule3(ReplacementRule):
-    def _process(self, instance):
-        matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
-        matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
-        if matches1 is None and matches2 is None:
-            return None
-
-        if matches1 is not None:
-            new_claim = "There exists a {0} that goes by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
-        else:
-            new_claim = "There exists an {0} that goes by the name of {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
-
-        instance["claim"] = new_claim
-
-        return instance
-
-    def name(self):
-        return "there.exists.a.that.goes.by.name.of"
+        return "there.does.not.exist.a.called"
 
 
 
@@ -78,19 +63,48 @@ class IsAReplacementRule2(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
+        if matches1 is None and matches2 is None:
+            return None
+
+        new_claim = "There exists no {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+
+        return instance
+
+    def name(self):
+        return "there.exists.no.a.called"
+
+
+
+class IsAReplacementRule3(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
+        matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There is a {0} called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
+            new_claim = "There does not exist a {0} that goes by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
         else:
-            new_claim = "There is an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There does not exist an {0} that goes by the name of {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+
         return instance
 
     def name(self):
-        return "there.is.a.called"
+        return "there.not.exist.named"
 
 
 
@@ -98,230 +112,209 @@ class IsAReplacementRule4(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There exists a {0} called {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
+            new_claim = "There is not a {0} called {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
         else:
-            new_claim = "There exists an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There is not an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
-        return "there.exists.a.called.prn"
+        return "there.is.not.called"
+
 
 
 class IsAReplacementRule5(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There exists a {0}, it goes by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
+            new_claim = "There is not a {0} that goes by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
         else:
-            new_claim = "There exists an {0}, it goes by the name of {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There is not an {0} that goes by the name of {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
-        return "there.exists.a.that.goes.by.name.of.prn"
-
-
-
-class IsAReplacementRule6(ReplacementRule):
-    def _process(self, instance):
-        matches1 = re.match(r"(.+) is a (.+)", instance["claim"])
-        matches2 = re.match(r"(.+) is an (.+)", instance["claim"])
-        if matches1 is None and matches2 is None:
-            return None
-
-        if matches1 is not None:
-            new_claim = "There is a {0}, it is called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
-        else:
-            new_claim = "There is an {0}, it is called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
-
-        instance["claim"] = new_claim
-        return instance
-
-    def name(self):
-        return "there.is.a.called.prn"
+        return "there.is.not.by.name"
 
 
 class WasAReplacementRule1(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There existed a {0} called {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
+            new_claim = "There did not exist a {0} called {1}.".format(matches1.group(2).replace(".", ""),
+                                                                        matches1.group(1))
         else:
-            new_claim = "There existed an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There did not exist an {0} called {1}.".format(matches2.group(2).replace(".", ""),
+                                                                         matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
-        return "there.existed.a.called"
-
-
-class WasAReplacementRule3(ReplacementRule):
-    def _process(self, instance):
-        matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
-        matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
-        if matches1 is None and matches2 is None:
-            return None
-
-        if matches1 is not None:
-            new_claim = "There existed a {0} that went by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
-        else:
-            new_claim = "There existed an {0} that went by the name of {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
-
-        instance["claim"] = new_claim
-
-        return instance
-
-    def name(self):
-        return "there.existed.a.that.went.by.name.of"
-
+        return "was.there.does.not.exist.a.called"
 
 
 class WasAReplacementRule2(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
+        if matches1 is None and matches2 is None:
+            return None
+
+        new_claim = "There existed no {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+
+        return instance
+
+    def name(self):
+        return "was.there.exists.no.a.called"
+
+
+class WasAReplacementRule3(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
+        matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There was a {0} called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
+            new_claim = "There did not exist a {0} that goes by the name of {1}.".format(
+                matches1.group(2).replace(".", ""), matches1.group(1))
         else:
-            new_claim = "There was an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There did not exist an {0} that goes by the name of {1}.".format(
+                matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+
         return instance
 
     def name(self):
-        return "there.was.a.called"
+        return "was.there.not.exist.named"
 
 
 class WasAReplacementRule4(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There existed a {0}, it was called {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
+            new_claim = "There was not a {0} called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
         else:
-            new_claim = "There existed an {0}, it was called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There was not an {0} called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
-        return "there.existed.a.called.prn"
+        return "was.there.is.not.called"
 
 
 class WasAReplacementRule5(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+
         if matches1 is None and matches2 is None:
             return None
 
         if matches1 is not None:
-            new_claim = "There existed a {0}, it went by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
+            new_claim = "There was not a {0} that went by the name of {1}.".format(matches1.group(2).replace(".", ""),
+                                                                                  matches1.group(1))
         else:
-            new_claim = "There existed an {0}, it went by the name of {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            new_claim = "There was not an {0} that went by the name of {1}.".format(matches2.group(2).replace(".", ""),
+                                                                                   matches2.group(1))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
-        return "there.existed.a.that.went.by.name.of.prn"
-
-
-
-class WasAReplacementRule6(ReplacementRule):
-    def _process(self, instance):
-        matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
-        matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
-        if matches1 is None and matches2 is None:
-            return None
-
-        if matches1 is not None:
-            new_claim = "There was a {0}, it was called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
-        else:
-            new_claim = "There was an {0}, it was called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
-
-        instance["claim"] = new_claim
-        return instance
-
-    def name(self):
-        return "there.was.a.called.prn"
-
+        return "was.there.is.not.by.name"
 
 
 class DirectedBy1(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
-        new_claim = "There is a movie called {0} which is directed by {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
+        new_claim = "There is a movie called {0} which is not directed by {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
         instance["claim"] = new_claim
 
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         return instance
 
     def name(self):
         return "directedby1"
 
-class DirectedBy4(ReplacementRule):
-    def _process(self, instance):
-        matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
-        if matches1 is None:
-            return None
-        new_claim = "{1} is the director of {0}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
-        instance["claim"] = new_claim
-
-        return instance
-
-    def name(self):
-        return "directedby4"
-
-class DirectedBy5(ReplacementRule):
-    def _process(self, instance):
-        matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
-        if matches1 is None:
-            return None
-        new_claim = "{1} was the director of {0}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
-        instance["claim"] = new_claim
-
-        return instance
-
-    def name(self):
-        return "directedby5"
-
 class DirectedBy2(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
-
-        new_claim = "There is a director, {0}, who was involved in the production of {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1).replace(".", ""))
+        new_claim = "There is a movie called {0} which wasn't directed by {1}.".format(
+            matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
         instance["claim"] = new_claim
+
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         return instance
 
     def name(self):
@@ -331,24 +324,63 @@ class DirectedBy2(ReplacementRule):
 class DirectedBy3(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
-        new_claim = "There is a person involved in the movie industry, {0}, who was the director of {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1).replace(".", ""))
+        new_claim = "There is a movie called {0}, {1} has no involvement in the production.".format(
+            matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         return instance
 
     def name(self):
         return "directedby3"
 
 
+class DirectedBy4(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+        if matches1 is None:
+            return None
+
+        new_claim = "There is a director, {0}, who was not involved in the production of {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1).replace(".", ""))
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        return instance
+
+    def name(self):
+        return "directedby4"
+
+
+class DirectedBy5(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) (?:was|is)? directed by (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+        if matches1 is None:
+            return None
+        new_claim = "There is a person involved in the movie industry, {0}, who was not the director of {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1).replace(".", ""))
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        return instance
+
+    def name(self):
+        return "directedby5"
+
+
 class StarredIn1(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:starred|stars) in (.+)", instance["claim"])
-
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
         new_claim = "There is a person, {0}, that starred in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
 
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         instance["claim"] = new_claim
         return instance
 
@@ -358,26 +390,64 @@ class StarredIn1(ReplacementRule):
 class StarredIn2(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:starred|stars) in (.+)", instance["claim"])
-
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
         new_claim = "There is a person, {0}, that took a leading acting role in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         return instance
 
     def name(self):
         return "starredin2"
 
 
+class StarredIn3(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) (?:starred|stars) in (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+        if matches1 is None:
+            return None
+        new_claim = "There is a person, {0}, that did not appear in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
+
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        return instance
+
+    def name(self):
+        return "starredin3"
+
+class StarredIn4(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) (?:starred|stars) in (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+        if matches1 is None:
+            return None
+        new_claim = "There is a person, {0}, that had no role in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        return instance
+
+    def name(self):
+        return "starredin4"
+
+
+
 class American(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) an American (.+)", instance["claim"])
-
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
-        new_claim = "{0} {1} that originated from the United States.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
+
+        new_claim = "{0} {1} that originated from outside the United States.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
@@ -389,6 +459,8 @@ class Birth1(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:was|is) born (?:in|on)? (.+)", instance["claim"])
 
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
 
@@ -398,17 +470,17 @@ class Birth1(ReplacementRule):
         is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
 
         if is_place and not is_time:
-            new_claim = "There exists a place, {1}, that is the birthplace of the person {0}.".format(matches1.group(1).replace(".", ""),
+            new_claim = "There exists a place, {1}, that was not the birthplace of the person {0}.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
         elif is_time and not is_place:
-            new_claim = "{1} is the approximate time at which the person {0} was born.".format(matches1.group(1).replace(".", ""),
+            new_claim = "{1} is not the approximate time at which the person {0} was born.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
 
         else:
             return None
 
         instance["claim"] = new_claim
-
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         return instance
 
     def name(self):
@@ -418,7 +490,8 @@ class Birth1(ReplacementRule):
 class Birth2(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) (?:was|is) born (?:in|on)? (.+)", instance["claim"])
-
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
 
@@ -428,27 +501,29 @@ class Birth2(ReplacementRule):
         is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
 
         if is_place and not is_time:
-            new_claim = "There exists a place, {1}, that is where the person {0} started living.".format(matches1.group(1).replace(".", ""),
+            new_claim = "There exists a place, {1}, that is not where the person {0} started living.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
         elif is_time and not is_place:
-            new_claim = "{1} is the approximate time at which the person {0} started living.".format(matches1.group(1).replace(".", ""),
+            new_claim = "{1} is not the approximate time at which the person {0} started living.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
 
         else:
             return None
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
     def name(self):
         return "birth2"
 
-
-class Death1(ReplacementRule):
+class Birth3(ReplacementRule):
     def _process(self, instance):
-        matches1 = re.match(r"(.+) died (?:in|on) (.+)", instance["claim"])
+        matches1 = re.match(r"(.+) (?:was|is) born (?:in|on)? (.+)", instance["claim"])
 
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
 
@@ -458,16 +533,81 @@ class Death1(ReplacementRule):
         is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
 
         if is_place and not is_time:
-            new_claim = "There exists a place, {1}, that is the place where the person {0} became deceased.".format(matches1.group(1).replace(".", ""),
+            new_claim = "{0} was born in some other place than {1}.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
         elif is_time and not is_place:
-            new_claim = "{1} is the approximate time at which the person {0} became deceased.".format(matches1.group(1).replace(".", ""),
+            new_claim = "{0} was born at some other time than {1}.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
 
         else:
             return None
 
         instance["claim"] = new_claim
+
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        return instance
+
+    def name(self):
+        return "birth3"
+
+
+class Birth4(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) (?:was|is) born (?:in|on)? (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+        if matches1 is None:
+            return None
+
+        doc = nlp(instance["claim"])
+
+        is_place = any([e.label_ in ["GPE","LOC"] for e in doc.ents])
+        is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
+
+        if is_place and not is_time:
+            new_claim = "{1} is some place other than where the person {0} was born.".format(matches1.group(1).replace(".", ""),
+                                                                                matches1.group(2).replace(".", ""))
+        elif is_time and not is_place:
+            new_claim = "{1} is some other time than when {0} was born.".format(matches1.group(1).replace(".", ""),
+                                                                                matches1.group(2).replace(".", ""))
+
+        else:
+            return None
+
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+
+        return instance
+
+    def name(self):
+        return "birth4"
+
+
+class Death1(ReplacementRule):
+    def _process(self, instance):
+        matches1 = re.match(r"(.+) died (?:in|on) (.+)", instance["claim"])
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
+        if matches1 is None:
+            return None
+
+        doc = nlp(instance["claim"])
+
+        is_place = any([e.label_ in ["GPE","LOC"] for e in doc.ents])
+        is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
+
+        if is_place and not is_time:
+            new_claim = "{1} is somewhere other than the place where the person {0} became deceased.".format(matches1.group(1).replace(".", ""),
+                                                                                matches1.group(2).replace(".", ""))
+        elif is_time and not is_place:
+            new_claim = "{1} is some other time than when the person {0} became deceased.".format(matches1.group(1).replace(".", ""),
+                                                                                matches1.group(2).replace(".", ""))
+
+        else:
+            return None
+
+        instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
@@ -478,7 +618,8 @@ class Death1(ReplacementRule):
 class Death2(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) died (?:in|on) (.+)", instance["claim"])
-
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
 
@@ -488,16 +629,17 @@ class Death2(ReplacementRule):
         is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
 
         if is_place and not is_time:
-            new_claim = "There exists a place, {1}, that is the place where the person {0} died.".format(matches1.group(1).replace(".", ""),
+            new_claim = "There exists a place, {1}, that is not the place where the person {0} died.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
         elif is_time and not is_place:
-            new_claim = "{1} is the approximate time at which the person {0} died.".format(matches1.group(1).replace(".", ""),
+            new_claim = "{1} is not the when the person {0} died.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
 
         else:
             return None
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
@@ -508,7 +650,8 @@ class Death2(ReplacementRule):
 class Death3(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) died (?:in|on) (.+)", instance["claim"])
-
+        if instance["label"] == "NOT ENOUGH INFO":
+            return None
         if matches1 is None:
             return None
 
@@ -518,16 +661,17 @@ class Death3(ReplacementRule):
         is_time = any([e.label_ in ["TIME","DATE","ORDINAL", "CARDINAL"] for e in doc.ents])
 
         if is_place and not is_time:
-            new_claim = "There exists a place, {1}, that is the place where the person {0} took their final breath.".format(matches1.group(1).replace(".", ""),
+            new_claim = "There exists a place, {1}, that is not the place where the person {0} took their final breath.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
         elif is_time and not is_place:
-            new_claim = "{1} is the approximate time at which the person {0} took their final breath.".format(matches1.group(1).replace(".", ""),
+            new_claim = "{1} is not the approximate time at which the person {0} took their final breath.".format(matches1.group(1).replace(".", ""),
                                                                                 matches1.group(2).replace(".", ""))
 
         else:
             return None
 
         instance["claim"] = new_claim
+        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
 
         return instance
 
@@ -544,13 +688,11 @@ class ClaimRewriter:
                                   IsAReplacementRule3(),
                                   IsAReplacementRule4(),
                                   IsAReplacementRule5(),
-                                  IsAReplacementRule6(),
                                   WasAReplacementRule1(),
                                   WasAReplacementRule2(),
                                   WasAReplacementRule3(),
                                   WasAReplacementRule4(),
                                   WasAReplacementRule5(),
-                                  WasAReplacementRule6(),
                                   DirectedBy1(),
                                   DirectedBy2(),
                                   DirectedBy3(),
@@ -559,6 +701,8 @@ class ClaimRewriter:
                                   American(),
                                   Birth1(),
                                   Birth2(),
+                                  Birth3(),
+                                  Birth4(),
                                   Death1(),
                                   Death2(),
                                   Death3()
