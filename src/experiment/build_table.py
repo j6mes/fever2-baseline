@@ -55,7 +55,10 @@ def score_submission(predicted_labels_file, predicted_evidence_file, actual_labe
 
 
 tab = PrettyTable()
-tab.field_names = ["Model", "Oracle Accuracy Before", "Oracle Accuracy After" ,"Evidence Precision", "Evidence Recall", "Evidence F1"]
+tab.field_names = ["Model", "Number of Data", "Oracle Accuracy Before", "Oracle Accuracy After","Delta Oracle Accuracy",
+                   "Pipeline Accuracy Before", "Pipeline Accuracy After", "Delta Pipeline Accuracy",
+                   "Pipeline FEVER Score Before", "Pipeline FEVER Score After","Delta FEVER Score Accuracy"
+                   ]
 
 paired_expts = set()
 for experiment in experiments:
