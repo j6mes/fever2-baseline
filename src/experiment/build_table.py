@@ -51,7 +51,7 @@ def score_submission(predicted_labels_file, predicted_evidence_file, actual_labe
         predictions.append({"predicted_evidence":ev,"predicted_label":label})
 
     sdata = fever_score(predictions,actual)
-    sdata.appen(len(predictions))
+    sdata.append(len(predictions))
     return sdata
 
 
