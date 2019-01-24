@@ -19,7 +19,7 @@ if [ "$(wc -l < data/model-specific/$MODEL/full/$1/$2)" -eq "$(wc -l < data/pred
 then echo 'Skipping making predictions as this exists';
 else
     python -m allennlp.run predict \
-        model.tar.gz \
+        $MODEL.tar.gz \
         data/model-specific/$MODEL/full/$1/$2 \
         --output-file data/predictions/$MODEL/full/$1/$2 \
         --predictor fever \
