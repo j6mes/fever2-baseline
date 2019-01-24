@@ -50,9 +50,9 @@ def score_submission(predicted_labels_file, predicted_evidence_file, actual_labe
     for ev,label in zip(predicted_evidence,predicted_labels):
         predictions.append({"predicted_evidence":ev,"predicted_label":label})
 
-    sdata = fever_score(predictions,actual)
+    sdata = list(fever_score(predictions,actual))
     sdata.append(len(predictions))
-    return sdata
+    return tuple(sdata)
 
 
 tab = PrettyTable()
