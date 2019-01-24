@@ -70,20 +70,20 @@ for experiment in experiments:
 for experiment in paired_expts:
     oracle_score_before,oracle_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/oracle/"+family+"/unchanged."+experiment + ".jsonl",
                                                      args.predicted_evidence_dir + "/oracle/"+family+"/unchanged." + experiment + ".jsonl",
-                                                     args.actual_dir + "/oracle/"+family+"/unchanged." + experiment + ".jsonl",
+                                                     args.actual_dir +"/" +family+"/unchanged." + experiment + ".jsonl",
                                                      )
     oracle_score_after,oracle_acc_after,_,_,_,_ = score_submission(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
                                                      args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
-                                                     args.actual_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
+                                                     args.actual_dir +"/" +family+"/changed." + experiment + ".jsonl",
                                                      )
 
     full_score_before,full_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
                                                      args.predicted_evidence_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
-                                                     args.actual_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
+                                                     args.actual_dir  +"/"+family+"/unchanged." + experiment + ".jsonl",
                                                      )
-    full_score_after,full_acc_after,_,_,_,elen = score_submission(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
-                                                     args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
-                                                     args.actual_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
+    full_score_after,full_acc_after,_,_,_,elen = score_submission(args.predicted_labels_dir+"/full/"+family+"/changed."+experiment + ".jsonl",
+                                                     args.predicted_evidence_dir + "/full/"+family+"/changed." + experiment + ".jsonl",
+                                                     args.actual_dir +"/"+family+"/changed." + experiment + ".jsonl",
                                                      )
 
 
