@@ -15,7 +15,7 @@ family = args.family
 from pathlib import Path
 
 experiments = []
-pathlist = Path(args.actual_dir).glob('*.jsonl')
+pathlist = Path(args.actual_dir+"/"+family).glob('*.jsonl')
 for path in pathlist:
     path_in_str = str(path)
     experiments.append(path_in_str.replace(args.actual_dir,""))
