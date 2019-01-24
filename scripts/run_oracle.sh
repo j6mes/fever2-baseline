@@ -1,5 +1,4 @@
 #!/bin/bash
-export MODEL=fever-da
 mkdir -pv data/model-specific/$MODEL/oracle/$1
 mkdir -pv data/predictions/$MODEL/oracle/$1
 
