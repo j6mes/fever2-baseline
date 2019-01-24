@@ -88,9 +88,9 @@ for experiment in paired_expts:
 
 
     tab.add_row([experiment,elen,
-                 round(oracle_score_before,4)*100, round(oracle_score_after,4)*100, round(oracle_score_before- oracle_score_after,4)*100,
-                 round(full_acc_before,4)*100, round(full_acc_after,4)*100, round(full_acc_before - full_acc_after,4)*100,
-                 round(full_score_before,4)*100, round(full_score_after,4)*100, round(full_score_before - full_score_after,4)*100
+                 round(oracle_score_before*100,4), round(oracle_score_after*100,4), round((oracle_score_before- oracle_score_after)*100,4),
+                 round(full_acc_before*100,4), round(full_acc_after*100,4), round((full_acc_before - full_acc_after)*100,4),
+                 round(full_score_before*100,4), round(full_score_after*100,4), round((full_score_before - full_score_after)*100,4)
                  ])
 
 print(tab)
