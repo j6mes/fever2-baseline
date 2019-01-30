@@ -68,29 +68,33 @@ for experiment in experiments:
 
 
 for experiment in paired_expts:
-    oracle_score_before,oracle_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/oracle/"+family+"/unchanged."+experiment + ".jsonl",
-                                                     args.predicted_evidence_dir + "/oracle/"+family+"/unchanged." + experiment + ".jsonl",
-                                                     args.actual_dir +"/" +family+"/unchanged." + experiment + ".jsonl",
-                                                     )
-    oracle_score_after,oracle_acc_after,_,_,_,_ = score_submission(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
-                                                     args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
-                                                     args.actual_dir +"/" +family+"/changed." + experiment + ".jsonl",
-                                                     )
+    try:
+        oracle_score_before,oracle_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/oracle/"+family+"/unchanged."+experiment + ".jsonl",
+                                                         args.predicted_evidence_dir + "/oracle/"+family+"/unchanged." + experiment + ".jsonl",
+                                                         args.actual_dir +"/" +family+"/unchanged." + experiment + ".jsonl",
+                                                         )
+        oracle_score_after,oracle_acc_after,_,_,_,_ = score_submission(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
+                                                         args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
+                                                         args.actual_dir +"/" +family+"/changed." + experiment + ".jsonl",
+                                                         )
 
-    full_score_before,full_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
-                                                     args.predicted_evidence_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
-                                                     args.actual_dir  +"/"+family+"/unchanged." + experiment + ".jsonl",
-                                                     )
-    full_score_after,full_acc_after,_,_,_,elen = score_submission(args.predicted_labels_dir+"/full/"+family+"/changed."+experiment + ".jsonl",
-                                                     args.predicted_evidence_dir + "/full/"+family+"/changed." + experiment + ".jsonl",
-                                                     args.actual_dir +"/"+family+"/changed." + experiment + ".jsonl",
-                                                     )
+        full_score_before,full_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
+                                                         args.predicted_evidence_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
+                                                         args.actual_dir  +"/"+family+"/unchanged." + experiment + ".jsonl",
+                                                         )
+        full_score_after,full_acc_after,_,_,_,elen = score_submission(args.predicted_labels_dir+"/full/"+family+"/changed."+experiment + ".jsonl",
+                                                         args.predicted_evidence_dir + "/full/"+family+"/changed." + experiment + ".jsonl",
+                                                         args.actual_dir +"/"+family+"/changed." + experiment + ".jsonl",
+                                                         )
 
 
-    tab.add_row([experiment,elen,
-                 "%.2f"%(round(oracle_score_before*100,4)), "%.2f"%(round(oracle_score_after*100,4)), "%.2f"%(round((oracle_score_after-oracle_score_before)*100,4)),
-                 "%.2f"%(round(full_acc_before*100,4)), "%.2f"%(round(full_acc_after*100,4)), "%.2f"%(round(( full_acc_after-full_acc_before)*100,4)),
-                 "%.2f"%(round(full_score_before*100,4)), "%.2f"%(round(full_score_after*100,4)), "%.2f"%(round((full_score_after-full_score_before)*100,4))
+        tab.add_row([experiment,elen,
+                     "%.2f"%(round(oracle_score_before*100,4)), "%.2f"%(round(oracle_score_after*100,4)), "%.2f"%(round((oracle_score_after-oracle_score_before)*100,4)),
+                     "%.2f"%(round(full_acc_before*100,4)), "%.2f"%(round(full_acc_after*100,4)), "%.2f"%(round(( full_acc_after-full_acc_before)*100,4)),
+                     "%.2f"%(round(full_score_before*100,4)), "%.2f"%(round(full_score_after*100,4)), "%.2f"%(round((full_score_after-full_score_before)*100,4))
                  ])
+
+    except Exception as e:
+        print(e)
 
 print(tab)
