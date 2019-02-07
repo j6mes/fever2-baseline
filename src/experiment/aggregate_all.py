@@ -19,7 +19,7 @@ for path in pathlist:
 
 
 for experiment_path in experiments:
-    matches = re.match(r'\\/([a-z-]+)\\/([a-z-]+)\.(.+)\\.jsonl',experiment_path)
+    matches = re.match(r'/([a-z-]+)/([a-z-]+).(.+).jsonl',experiment_path)
     experiment = matches.group(3)
 
     print(experiment)
