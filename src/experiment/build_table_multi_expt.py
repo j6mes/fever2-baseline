@@ -68,7 +68,7 @@ tab.field_names = ["Number or Data Before", "Number of Data After", "Oracle Accu
 
 paired_expts = set()
 for experiment in experiments:
-    paired_expts.add(experiment.replace("unchanged.","").replace("changed.","").replace(".jsonl","").replace("/","").replace(family,""))
+    paired_expts.add(experiment.replace("unchanged.","").replace("changed.","").replace(".jsonl","").replace("/","").replace(family,"",1))
 
 
 
