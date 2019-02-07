@@ -65,13 +65,18 @@ for experiment_path in experiments:
 
     copyfile(unchanged_old_actual_file, unchanged_new_actual_file)
 
-    copyfile(unchanged_oracle_old_predicted_file, unchanged_oracle_new_predicted_file)
-    copyfile(unchanged_oracle_old_evidence_file, unchanged_oracle_new_evidence_file)
+    try:
+        copyfile(unchanged_oracle_old_predicted_file, unchanged_oracle_new_predicted_file)
+        copyfile(unchanged_oracle_old_evidence_file, unchanged_oracle_new_evidence_file)
+
+        copyfile(changed_oracle_old_predicted_file, changed_oracle_new_predicted_file)
+        copyfile(changed_oracle_old_evidence_file, changed_oracle_new_evidence_file)
+    except:
+        print("Could not copy oracle data for " + experiment)
+
     copyfile(unchanged_full_old_predicted_file, unchanged_full_new_predicted_file)
     copyfile(unchanged_full_old_evidence_file, unchanged_full_new_evidence_file)
 
     copyfile(changed_old_actual_file, changed_new_actual_file)
-    copyfile(changed_oracle_old_predicted_file, changed_oracle_new_predicted_file)
-    copyfile(changed_oracle_old_evidence_file, changed_oracle_new_evidence_file)
     copyfile(changed_full_old_predicted_file, changed_full_new_predicted_file)
     copyfile(changed_full_old_evidence_file, changed_full_new_evidence_file)
