@@ -8,9 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--predicted-labels-dir",type=str)
 parser.add_argument("--predicted-evidence-dir",type=str, default=None)
 parser.add_argument("--actual-dir",type=str)
-parser.add_argument("--family1",type=str)
-parser.add_argument("--family2",type=str)
-parser.add_argument("--family3",type=str)
+parser.add_argument("--family",type=str)
 
 args = parser.parse_args()
 family = args.family
