@@ -77,8 +77,8 @@ def score2(all_expts):
     return tuple(sdata)
 
 def extend_predictions(existing, new):
-    existing_ids = set(map(lambda item: item["id"],existing))
-    novel_new = filter(lambda item: item["id"] not in existing_ids,new)
+    existing_ids = set(map(lambda item: item[1]["id"],existing))
+    novel_new = filter(lambda item: item[1]["id"] not in existing_ids,new)
     existing.extend(novel_new)
 
 before_oracle_expts = []
