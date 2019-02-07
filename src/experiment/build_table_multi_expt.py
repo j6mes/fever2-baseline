@@ -20,31 +20,41 @@ for path in pathlist:
     path_in_str = str(path)
     experiments.append(path_in_str.replace(args.actual_dir,""))
 
-def get_predictions(predicted_labels_file, predicted_evidence_file, actual_labels_file):
+def get_predictions(predicted_labels_file, predicted_evidence_file, actual_labels_file, is_before=False):
     predicted_labels =[]
     predicted_evidence = []
     actual = []
 
+    added_ids = {}
+
     flatten = lambda l: [item for sublist in l for item in sublist]
 
-    with open(predicted_labels_file,"r") as predictions_file:
-        for line in predictions_file:
-            predicted_labels.append(json.loads(line)["predicted_label"])
+    doesnt_require_match = not is_before
+
 
     with open(actual_labels_file, "r") as actual_file:
-        for line in actual_file:
-            actual.append(json.loads(line))
+        for idx,line in enumerate(actual_file):
+            json_line = json.loads(line)
+            if doesnt_require_match or json_line["id"] not in added_ids:
+                added_ids[json_line["id"]] = idx
+                actual.append(json_line)
+
+    with open(predicted_labels_file,"r") as predictions_file:
+        for idx,line in enumerate(predictions_file):
+            if doesnt_require_match or idx in added_ids.values():
+                predicted_labels.append(json.loads(line)["predicted_label"])
 
     with open(predicted_evidence_file, "r") as predictions_file:
-        for line in predictions_file:
-            line = json.loads(line)
+        for idx,line in enumerate(predictions_file):
+            if doesnt_require_match or idx in added_ids.values():
+                line = json.loads(line)
 
-            if "predicted_evidence" in line:
-                predicted_evidence.append(line["predicted_evidence"])
-            elif "predicted_sentences" in line:
-                predicted_evidence.append(line["predicted_sentences"])
-            else:
-                predicted_evidence.append([[e[2],e[3]] for e in flatten(line["evidence"])])
+                if "predicted_evidence" in line:
+                    predicted_evidence.append(line["predicted_evidence"])
+                elif "predicted_sentences" in line:
+                    predicted_evidence.append(line["predicted_sentences"])
+                else:
+                    predicted_evidence.append([[e[2],e[3]] for e in flatten(line["evidence"])])
 
 
     predictions = []
@@ -84,7 +94,7 @@ for experiment in paired_expts:
         before_oracle_expts.extend(
             get_predictions(args.predicted_labels_dir + "/oracle/" + family + "/unchanged." + experiment + ".jsonl",
                             args.predicted_evidence_dir + "/oracle/" + family + "/unchanged." + experiment + ".jsonl",
-                            args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl",
+                            args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl",is_before=True
                             ))
         after_oracle_expts.extend(
             get_predictions(args.predicted_labels_dir + "/oracle/" + family + "/changed." + experiment + ".jsonl",
@@ -97,7 +107,7 @@ for experiment in paired_expts:
     before_full_expts.extend(
         get_predictions(args.predicted_labels_dir + "/full/" + family + "/unchanged." + experiment + ".jsonl",
                         args.predicted_evidence_dir + "/full/" + family + "/unchanged." + experiment + ".jsonl",
-                        args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl",
+                        args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl",is_before=True
                         ))
     after_full_expts.extend(
         get_predictions(args.predicted_labels_dir + "/full/" + family + "/changed." + experiment + ".jsonl",
