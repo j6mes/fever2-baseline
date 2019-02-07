@@ -26,6 +26,9 @@ os.makedirs(args.predicted_labels_dir+"/full/all",exist_ok=True)
 os.makedirs(args.predicted_evidence_dir +"/oracle/all",exist_ok=True)
 os.makedirs(args.predicted_evidence_dir +"/full/all",exist_ok=True)
 
+os.makedirs(args.actual_dir +"/all",exist_ok=True)
+
+
 for experiment_path in experiments:
     matches = re.match(r'/([a-z-]+)/([a-z-]+).(.+).jsonl',experiment_path)
     experiment = str(matches.group(3))
