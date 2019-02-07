@@ -91,6 +91,8 @@ for experiment in paired_expts:
                                                              args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
                                                              args.actual_dir +"/" +family+"/changed." + experiment + ".jsonl",
                                                              ))
+            oracle_score_before, oracle_acc_before, _, _, _, _ = score2(before_oracle_expts)
+            oracle_score_after, oracle_acc_after, _, _, _, _ = score2(after_oracle_expts)
         except:
             oracle_score_before = 0
             oracle_acc_before = 0
@@ -108,8 +110,7 @@ for experiment in paired_expts:
                                                          args.actual_dir +"/"+family+"/changed." + experiment + ".jsonl",
                                                          ))
 
-        oracle_score_before, oracle_acc_before, _, _, _,_ = score2(before_oracle_expts)
-        oracle_score_after, oracle_acc_after, _, _, _,_ = score2(after_oracle_expts)
+
         full_score_before, full_acc_before, _, _, _,_ = score2(before_full_expts)
         full_score_after, full_acc_after, _, _, _,elen = score2(after_full_expts)
 
