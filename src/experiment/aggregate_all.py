@@ -19,11 +19,12 @@ for path in pathlist:
     path_in_str = str(path)
     experiments.append(path_in_str.replace(args.actual_dir,""))
 
-os.makedirs(args.predicted_labels_dir+"/oracle/all")
-os.makedirs(args.predicted_labels_dir+"/full/all")
 
-os.makedirs(args.predicted_evidence_dir +"/oracle/all")
-os.makedirs(args.predicted_evidence_dir +"/full/all")
+os.makedirs(args.predicted_labels_dir+"/oracle/all",exist_ok=True)
+os.makedirs(args.predicted_labels_dir+"/full/all",exist_ok=True)
+
+os.makedirs(args.predicted_evidence_dir +"/oracle/all",exist_ok=True)
+os.makedirs(args.predicted_evidence_dir +"/full/all",exist_ok=True)
 
 for experiment_path in experiments:
     matches = re.match(r'/([a-z-]+)/([a-z-]+).(.+).jsonl',experiment_path)
