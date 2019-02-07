@@ -20,7 +20,7 @@ for path in pathlist:
     path_in_str = str(path)
     experiments.append(path_in_str.replace(args.actual_dir,""))
 
-def score_submission(predicted_labels_file, predicted_evidence_file, actual_labels_file):
+def get_predictions(predicted_labels_file, predicted_evidence_file, actual_labels_file):
     predicted_labels =[]
     predicted_evidence = []
     actual = []
@@ -53,9 +53,7 @@ def score_submission(predicted_labels_file, predicted_evidence_file, actual_labe
     for ev,label in zip(predicted_evidence,predicted_labels):
         predictions.append({"predicted_evidence":ev,"predicted_label":label})
 
-    sdata = list(fever_score(predictions,actual))
-    sdata.append(len(predictions))
-    return tuple(sdata)
+    return zip(predictions,actual)
 
 
 tab = PrettyTable()
@@ -69,17 +67,30 @@ for experiment in experiments:
     paired_expts.add(experiment.replace("unchanged.","").replace("changed.","").replace(".jsonl","").replace("/","").replace(family,""))
 
 
+
+def score2(all_expts):
+    predictions,actual = list(zip(*all_expts))
+    sdata = list(fever_score(predictions,actual))
+    sdata.append(len(predictions))
+    return tuple(sdata)
+
+
 for experiment in paired_expts:
+
+    before_oracle_expts = []
+    after_oracle_expts = []
+    before_full_expts = []
+    after_full_expts = []
     try:
         try:
-            oracle_score_before,oracle_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/oracle/"+family+"/unchanged."+experiment + ".jsonl",
+            before_oracle_expts.extend(get_predictions(args.predicted_labels_dir+"/oracle/"+family+"/unchanged."+experiment + ".jsonl",
                                                              args.predicted_evidence_dir + "/oracle/"+family+"/unchanged." + experiment + ".jsonl",
                                                              args.actual_dir +"/" +family+"/unchanged." + experiment + ".jsonl",
-                                                             )
-            oracle_score_after,oracle_acc_after,_,_,_,_ = score_submission(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
+                                                             ))
+            after_oracle_expts.extend(get_predictions(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
                                                              args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
                                                              args.actual_dir +"/" +family+"/changed." + experiment + ".jsonl",
-                                                             )
+                                                             ))
         except:
             oracle_score_before = 0
             oracle_acc_before = 0
@@ -88,15 +99,19 @@ for experiment in paired_expts:
             oracle_acc_after = 0
 
 
-        full_score_before,full_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
+        before_full_expts.extend(get_predictions(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
                                                          args.predicted_evidence_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
                                                          args.actual_dir  +"/"+family+"/unchanged." + experiment + ".jsonl",
-                                                         )
-        full_score_after,full_acc_after,_,_,_,elen = score_submission(args.predicted_labels_dir+"/full/"+family+"/changed."+experiment + ".jsonl",
+                                                         ))
+        after_full_expts.extend(get_predictions(args.predicted_labels_dir+"/full/"+family+"/changed."+experiment + ".jsonl",
                                                          args.predicted_evidence_dir + "/full/"+family+"/changed." + experiment + ".jsonl",
                                                          args.actual_dir +"/"+family+"/changed." + experiment + ".jsonl",
-                                                         )
+                                                         ))
 
+        oracle_score_before, oracle_acc_before, _, _, _,_ = score2(before_oracle_expts)
+        oracle_score_after, oracle_acc_after, _, _, _,_ = score2(after_oracle_expts)
+        full_score_before, full_acc_before, _, _, _,_ = score2(before_full_expts)
+        full_score_after, full_acc_after, _, _, _,elen = score2(after_full_expts)
 
         tab.add_row([experiment,elen,
                      "%.2f"%(round(oracle_score_before*100,4)), "%.2f"%(round(oracle_score_after*100,4)), "%.2f"%(round((oracle_score_after-oracle_score_before)*100,4)),
