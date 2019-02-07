@@ -20,6 +20,8 @@ for path in pathlist:
     path_in_str = str(path)
     experiments.append(path_in_str.replace(args.actual_dir,""))
 
+experiments.sort()
+
 def get_predictions(predicted_labels_file, predicted_evidence_file, actual_labels_file):
     predicted_labels =[]
     predicted_evidence = []
@@ -76,7 +78,7 @@ def score2(all_expts):
     sdata.append(len(predictions))
     return tuple(sdata)
 
-def extend_predictions(existing, new,filtering=False):
+def extend_predictions(existing, new, filtering=False):
     if filtering:
         existing_ids = set(map(lambda item: item[1]["id"],existing))
         novel_new = filter(lambda item: item[1]["id"] not in existing_ids,new)
