@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 from pathlib import Path
-
+import re
 parser = ArgumentParser()
 
 parser.add_argument("--family",type=str)
@@ -18,8 +18,13 @@ for path in pathlist:
     experiments.append(path_in_str.replace(args.actual_dir,""))
 
 
-for experiment in experiments:
+for experiment_path in experiments:
+    matches = re.match(r'\\/([a-z-]+)\\/([a-z-]+)\.(.+)\\.jsonl',experiment_path)
+    experiment = matches.group(3)
+
     print(experiment)
+
+
     changed_oracle_new_predicted_file = args.predicted_labels_dir + "/oracle/all/changed." + family + "." + experiment + ".jsonl"
     changed_oracle_new_evidence_file = args.predicted_evidence_dir + "/oracle/all/changed." + family + "." + experiment + ".jsonl"
     changed_full_new_predicted_file = args.predicted_labels_dir + "/full/all/changed." + family + "." + experiment + ".jsonl"
