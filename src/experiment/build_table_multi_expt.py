@@ -57,9 +57,9 @@ def get_predictions(predicted_labels_file, predicted_evidence_file, actual_label
 
 
 tab = PrettyTable()
-tab.field_names = ["Model", "Number of Data", "Oracle Accuracy Before", "Oracle Accuracy After","Delta Oracle Accuracy",
+tab.field_names = ["Number or Data Before", "Number of Data After", "Oracle Accuracy Before", "Oracle Accuracy After","Delta Oracle Accuracy",
                    "Pipeline Accuracy Before", "Pipeline Accuracy After", "Delta Pipeline Accuracy",
-                   "Pipeline FEVER Score Before", "Pipeline FEVER Score After","Delta FEVER Score Accuracy"
+                   "Pipeline FEVER Score Before", "Pipeline FEVER Score After","Delta FEVER Score"
                    ]
 
 paired_expts = set()
@@ -74,54 +74,56 @@ def score2(all_expts):
     sdata.append(len(predictions))
     return tuple(sdata)
 
+before_oracle_expts = []
+after_oracle_expts = []
+before_full_expts = []
+after_full_expts = []
 
 for experiment in paired_expts:
-
-    before_oracle_expts = []
-    after_oracle_expts = []
-    before_full_expts = []
-    after_full_expts = []
     try:
-        try:
-            before_oracle_expts.extend(get_predictions(args.predicted_labels_dir+"/oracle/"+family+"/unchanged."+experiment + ".jsonl",
-                                                             args.predicted_evidence_dir + "/oracle/"+family+"/unchanged." + experiment + ".jsonl",
-                                                             args.actual_dir +"/" +family+"/unchanged." + experiment + ".jsonl",
-                                                             ))
-            after_oracle_expts.extend(get_predictions(args.predicted_labels_dir+"/oracle/"+family+"/changed."+experiment + ".jsonl",
-                                                             args.predicted_evidence_dir + "/oracle/"+family+"/changed." + experiment + ".jsonl",
-                                                             args.actual_dir +"/" +family+"/changed." + experiment + ".jsonl",
-                                                             ))
-            oracle_score_before, oracle_acc_before, _, _, _, _ = score2(before_oracle_expts)
-            oracle_score_after, oracle_acc_after, _, _, _, _ = score2(after_oracle_expts)
-        except:
-            oracle_score_before = 0
-            oracle_acc_before = 0
+        before_oracle_expts.extend(
+            get_predictions(args.predicted_labels_dir + "/oracle/" + family + "/unchanged." + experiment + ".jsonl",
+                            args.predicted_evidence_dir + "/oracle/" + family + "/unchanged." + experiment + ".jsonl",
+                            args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl",
+                            ))
+        after_oracle_expts.extend(
+            get_predictions(args.predicted_labels_dir + "/oracle/" + family + "/changed." + experiment + ".jsonl",
+                            args.predicted_evidence_dir + "/oracle/" + family + "/changed." + experiment + ".jsonl",
+                            args.actual_dir + "/" + family + "/changed." + experiment + ".jsonl",
+                            ))
+    except:
+        pass
 
-            oracle_score_after = 0
-            oracle_acc_after = 0
+    before_full_expts.extend(
+        get_predictions(args.predicted_labels_dir + "/full/" + family + "/unchanged." + experiment + ".jsonl",
+                        args.predicted_evidence_dir + "/full/" + family + "/unchanged." + experiment + ".jsonl",
+                        args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl",
+                        ))
+    after_full_expts.extend(
+        get_predictions(args.predicted_labels_dir + "/full/" + family + "/changed." + experiment + ".jsonl",
+                        args.predicted_evidence_dir + "/full/" + family + "/changed." + experiment + ".jsonl",
+                        args.actual_dir + "/" + family + "/changed." + experiment + ".jsonl",
+                        ))
+
+try:
+    oracle_score_before, oracle_acc_before, _, _, _, _ = score2(before_oracle_expts)
+    oracle_score_after, oracle_acc_after, _, _, _, _ = score2(after_oracle_expts)
+except:
+    oracle_score_before = 0
+    oracle_acc_before = 0
+
+    oracle_score_after = 0
+    oracle_acc_after = 0
 
 
-        before_full_expts.extend(get_predictions(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
-                                                         args.predicted_evidence_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
-                                                         args.actual_dir  +"/"+family+"/unchanged." + experiment + ".jsonl",
-                                                         ))
-        after_full_expts.extend(get_predictions(args.predicted_labels_dir+"/full/"+family+"/changed."+experiment + ".jsonl",
-                                                         args.predicted_evidence_dir + "/full/"+family+"/changed." + experiment + ".jsonl",
-                                                         args.actual_dir +"/"+family+"/changed." + experiment + ".jsonl",
-                                                         ))
+full_score_before, full_acc_before, _, _, _,blen = score2(before_full_expts)
+full_score_after, full_acc_after, _, _, _,elen = score2(after_full_expts)
 
+tab.add_row([blen,elen,
+             "%.2f"%(round(oracle_score_before*100,4)), "%.2f"%(round(oracle_score_after*100,4)), "%.2f"%(round((oracle_score_after-oracle_score_before)*100,4)),
+             "%.2f"%(round(full_acc_before*100,4)), "%.2f"%(round(full_acc_after*100,4)), "%.2f"%(round(( full_acc_after-full_acc_before)*100,4)),
+             "%.2f"%(round(full_score_before*100,4)), "%.2f"%(round(full_score_after*100,4)), "%.2f"%(round((full_score_after-full_score_before)*100,4))
+         ])
 
-        full_score_before, full_acc_before, _, _, _,_ = score2(before_full_expts)
-        full_score_after, full_acc_after, _, _, _,elen = score2(after_full_expts)
-
-        tab.add_row([experiment,elen,
-                     "%.2f"%(round(oracle_score_before*100,4)), "%.2f"%(round(oracle_score_after*100,4)), "%.2f"%(round((oracle_score_after-oracle_score_before)*100,4)),
-                     "%.2f"%(round(full_acc_before*100,4)), "%.2f"%(round(full_acc_after*100,4)), "%.2f"%(round(( full_acc_after-full_acc_before)*100,4)),
-                     "%.2f"%(round(full_score_before*100,4)), "%.2f"%(round(full_score_after*100,4)), "%.2f"%(round((full_score_after-full_score_before)*100,4))
-                 ])
-
-    except Exception as e:
-        print(e)
-        raise e
 
 print(tab)
