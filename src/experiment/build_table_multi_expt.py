@@ -76,10 +76,13 @@ def score2(all_expts):
     sdata.append(len(predictions))
     return tuple(sdata)
 
-def extend_predictions(existing, new):
-    existing_ids = set(map(lambda item: item[1]["id"],existing))
-    novel_new = filter(lambda item: item[1]["id"] not in existing_ids,new)
-    existing.extend(novel_new)
+def extend_predictions(existing, new,filtering=False):
+    if filtering:
+        existing_ids = set(map(lambda item: item[1]["id"],existing))
+        novel_new = filter(lambda item: item[1]["id"] not in existing_ids,new)
+        existing.extend(novel_new)
+    else:
+        existing.extend(new)
 
 before_oracle_expts = []
 after_oracle_expts = []
@@ -92,7 +95,7 @@ for experiment in paired_expts:
             get_predictions(args.predicted_labels_dir + "/oracle/" + family + "/unchanged." + experiment + ".jsonl",
                             args.predicted_evidence_dir + "/oracle/" + family + "/unchanged." + experiment + ".jsonl",
                             args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl"
-                            ))
+                            ),filtering=True)
         extend_predictions(after_oracle_expts,
             get_predictions(args.predicted_labels_dir + "/oracle/" + family + "/changed." + experiment + ".jsonl",
                             args.predicted_evidence_dir + "/oracle/" + family + "/changed." + experiment + ".jsonl",
@@ -105,7 +108,7 @@ for experiment in paired_expts:
         get_predictions(args.predicted_labels_dir + "/full/" + family + "/unchanged." + experiment + ".jsonl",
                         args.predicted_evidence_dir + "/full/" + family + "/unchanged." + experiment + ".jsonl",
                         args.actual_dir + "/" + family + "/unchanged." + experiment + ".jsonl"
-                        ))
+                        ),filtering=True)
     extend_predictions(after_full_expts,
         get_predictions(args.predicted_labels_dir + "/full/" + family + "/changed." + experiment + ".jsonl",
                         args.predicted_evidence_dir + "/full/" + family + "/changed." + experiment + ".jsonl",
