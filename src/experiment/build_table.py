@@ -35,10 +35,15 @@ def score_submission(predicted_labels_file, predicted_evidence_file, actual_labe
         for line in actual_file:
             actual.append(json.loads(line))
 
+            print(line)
+
     with open(predicted_evidence_file, "r") as predictions_file:
         for line in predictions_file:
             line = json.loads(line)
-            if "predicted_sentences" in line:
+
+            if "predicted_evidence" in line:
+                predicted_evidence.append(line["predicted_evidence"])
+            elif "predicted_sentences" in line:
                 predicted_evidence.append(line["predicted_sentences"])
             else:
                 predicted_evidence.append([[e[2],e[3]] for e in flatten(line["evidence"])])
@@ -85,7 +90,7 @@ for experiment in paired_expts:
             oracle_score_after = 0
             oracle_acc_after = 0
 
-            
+
         full_score_before,full_acc_before,_,_,_ ,_= score_submission(args.predicted_labels_dir+"/full/"+family+"/unchanged."+experiment + ".jsonl",
                                                          args.predicted_evidence_dir + "/full/"+family+"/unchanged." + experiment + ".jsonl",
                                                          args.actual_dir  +"/"+family+"/unchanged." + experiment + ".jsonl",
@@ -104,5 +109,6 @@ for experiment in paired_expts:
 
     except Exception as e:
         print(e)
+        raise e
 
 print(tab)
