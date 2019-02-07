@@ -40,7 +40,7 @@ for experiment_path in experiments:
     changed_oracle_new_evidence_file = args.predicted_evidence_dir + "/oracle/all/changed." + family + "." + experiment + ".jsonl"
     changed_full_new_predicted_file = args.predicted_labels_dir + "/full/all/changed." + family + "." + experiment + ".jsonl"
     changed_full_new_evidence_file = args.predicted_evidence_dir + "/full/all/changed." + family + "." + experiment + ".jsonl"
-    changed_new_actual_file = args.actual_dir + "/all/unchanged." + family + "." + experiment + ".jsonl"
+    changed_new_actual_file = args.actual_dir + "/all/changed." + family + "." + experiment + ".jsonl"
 
     unchanged_oracle_new_predicted_file = args.predicted_labels_dir + "/oracle/all/unchanged."+family+"."+experiment + ".jsonl"
     unchanged_oracle_new_evidence_file = args.predicted_evidence_dir + "/oracle/all/unchanged." +family+"."+ experiment + ".jsonl"
@@ -63,7 +63,6 @@ for experiment_path in experiments:
     changed_full_old_evidence_file = args.predicted_evidence_dir + "/full/" + family + "/changed." + experiment + ".jsonl"
 
 
-    copyfile(unchanged_old_actual_file, unchanged_new_actual_file)
 
     try:
         copyfile(unchanged_oracle_old_predicted_file, unchanged_oracle_new_predicted_file)
@@ -74,9 +73,9 @@ for experiment_path in experiments:
     except:
         print("Could not copy oracle data for " + experiment)
 
+    copyfile(unchanged_old_actual_file, unchanged_new_actual_file)
     copyfile(unchanged_full_old_predicted_file, unchanged_full_new_predicted_file)
     copyfile(unchanged_full_old_evidence_file, unchanged_full_new_evidence_file)
-
     copyfile(changed_old_actual_file, changed_new_actual_file)
     copyfile(changed_full_old_predicted_file, changed_full_new_predicted_file)
     copyfile(changed_full_old_evidence_file, changed_full_new_evidence_file)
