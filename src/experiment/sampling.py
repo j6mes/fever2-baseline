@@ -4,6 +4,8 @@ import numpy as np
 import json
 import argparse
 
+np.random.seed(123)
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--in-file",type=str)
 parser.add_argument("--out-file",type=str)
