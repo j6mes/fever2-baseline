@@ -1,0 +1,15 @@
+python -m allennlp.run predict \
+  ~/Documents/fever2-baseline/fever-esim-elmo.tar.gz \
+  data/fever/dev.ns.pages.p1.jsonl \
+  --output-file sampled \
+  --predictor fever-oracle \
+  --include-package fever.reader \
+  --cuda-device -1
+
+python -m allennlp.run predict \
+  ~/Documents/fever2-baseline/fever-esim-elmo.tar.gz \
+  data/fever/dev.sentences.p5.s5.jsonl \
+  --output-file full \
+  --predictor fever \
+  --include-package fever.reader \
+  --cuda-device -1
