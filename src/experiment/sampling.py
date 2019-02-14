@@ -35,5 +35,6 @@ for v in sampled.values():
 np.random.shuffle(all_claims)
 
 with open(args.out_file,"w+") as outfile:
-    for line in all_claims:
+    for id,line in enumerate(all_claims):
+        line['id'] = id
         outfile.write(json.dumps(line)+"\n")
