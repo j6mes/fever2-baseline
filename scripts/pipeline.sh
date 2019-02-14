@@ -8,7 +8,7 @@ python -m fever.evidence.retrieve \
     --index data/index/fever-tfidf-ngram=2-hash=16777216-tokenizer=simple.npz \
     --database data/fever/fever.db \
     --in-file data/$1 \
-    --out-file data/pipeline/$MODEL/full.$1 \
+    --out-file data/pipeline/$MODEL/full.ir.$1 \
     --max-page 5 \
     --max-sent 5
 fi
