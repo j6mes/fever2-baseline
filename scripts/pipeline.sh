@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -pv data/pipeline/$MODEL
 
-if [ "$(wc -l < data/$1)" -eq "$(wc -l < data/pipeline/$MODEL/full.$1)" ];
+if [ "$(wc -l < data/generate/$1)" -eq "$(wc -l < data/pipeline/$MODEL/full.$1)" ];
 then echo 'Skipping sampling evidence as this exists';
 else
 python -m fever.evidence.retrieve \
