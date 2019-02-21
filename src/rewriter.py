@@ -89,7 +89,7 @@ class LabelPreservingClaimRewriter(ClaimRewriter):
         super().__init__("label_preserving",
                          rules)
 
-class SimpleNegateClaimRewriter:
+class SimpleNegateClaimRewriter(ClaimRewriter):
 
     def __init__(self):
         rules = [SimpleNegateIsAReplacementRuleMeaningAltering(),
