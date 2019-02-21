@@ -1,6 +1,6 @@
 fever-allennlp-reader
 fever-scorer
+fever-allennlp
 prettytable
-git+ssh://git@github.com/j6mes/fever-allennlp@master
 sklearn
 tqdm
