@@ -29,9 +29,7 @@ class ClaimRewriter:
 
 class ComplexNegateClaimRewriter(ClaimRewriter):
     def __init__(self):
-
-        super().__init__("complex_negate",
-                         [ComplexNegateIsAReplacementRule1(),
+        rules = [ComplexNegateIsAReplacementRule1(),
                           ComplexNegateIsAReplacementRule2(),
                           ComplexNegateIsAReplacementRule3(),
                           ComplexNegateIsAReplacementRule4(),
@@ -54,7 +52,9 @@ class ComplexNegateClaimRewriter(ClaimRewriter):
                           ComplexNegateDeath1(),
                           ComplexNegateDeath2(),
                           ComplexNegateDeath3()
-                          ])
+                          ]
+        super().__init__("complex_negate",
+                         rules)
 
 
 
@@ -62,8 +62,7 @@ class ComplexNegateClaimRewriter(ClaimRewriter):
 class LabelPreservingClaimRewriter(ClaimRewriter):
 
     def __init__(self):
-        super().__init__("label_preserving",
-                         [LabelPreservingIsAReplacementRule1(),
+        rules  =[LabelPreservingIsAReplacementRule1(),
                           LabelPreservingIsAReplacementRule2(),
                           LabelPreservingIsAReplacementRule3(),
                           LabelPreservingIsAReplacementRule4(),
@@ -86,13 +85,14 @@ class LabelPreservingClaimRewriter(ClaimRewriter):
                           LabelPreservingDeath1(),
                           LabelPreservingDeath2(),
                           LabelPreservingDeath3()
-                          ])
+                          ]
+        super().__init__("label_preserving",
+                         rules)
 
 class SimpleNegateClaimRewriter:
 
     def __init__(self):
-        super().__init__("simple_negate",
-                         [SimpleNegateIsAReplacementRuleMeaningAltering(),
+        rules = [SimpleNegateIsAReplacementRuleMeaningAltering(),
                           SimpleNegateWasAReplacementRuleMeaningAltering(),
                           SimpleNegateIsAReplacementRuleMeaningAltering1(),
                           SimpleNegateWasAReplacementRuleMeaningAltering1(),
@@ -111,7 +111,9 @@ class SimpleNegateClaimRewriter:
                           SimpleNegateBirth2(),
                           SimpleNegateDeath1(),
                           SimpleNegateDeath2()
-                          ])
+                          ]
+        super().__init__("simple_negate",
+                         rules)
 
 
 
