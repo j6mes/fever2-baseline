@@ -28,6 +28,8 @@ if __name__ == "__main__":
 
             new_claims[claim["claim"]] = (line,idx)
 
+    print(len(new_claims.keys()))
+    print(len(old_claims.keys()))
 
     diff = set(new_claims.keys()).difference(set(old_claims.keys()))
     diff_minus = set(old_claims.keys()).intersection(set(new_claims.keys()))
