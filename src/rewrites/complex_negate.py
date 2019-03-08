@@ -298,7 +298,7 @@ class ComplexNegateDirectedBy3(ReplacementRule):
             return None
         if matches1 is None:
             return None
-        new_claim = "There is a movie called {0}, {1} has no involvement in the production.".format(
+        new_claim = "There is a movie called {0}, {1} has no involvement in its production.".format(
             matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
         instance["claim"] = new_claim
         instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
@@ -348,7 +348,7 @@ class ComplexNegateStarredIn1(ReplacementRule):
             return None
         if matches1 is None:
             return None
-        new_claim = "There is a person, {0}, that starred in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
+        new_claim = "There is a person, {0}, that did not star in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
 
         instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         instance["claim"] = new_claim
@@ -364,7 +364,7 @@ class ComplexNegateStarredIn2(ReplacementRule):
             return None
         if matches1 is None:
             return None
-        new_claim = "There is a person, {0}, that took a leading acting role in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
+        new_claim = "There is a person, {0}, that did not take a leading acting role in {1}.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
         instance["claim"] = new_claim
         instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
         return instance
@@ -413,11 +413,13 @@ class ComplexNegateAmerican(ReplacementRule):
             return None
         if matches1 is None:
             return None
+        if instance["label"] == "REFUTES":
+            return None
 
         new_claim = "{0} {1} that originated from outside the United States.".format(matches1.group(1).replace(".", ""), matches1.group(2).replace(".", ""))
 
         instance["claim"] = new_claim
-        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        instance["label"] = "REFUTES"
 
         return instance
 

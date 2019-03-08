@@ -309,9 +309,11 @@ class SimpleNegateAmerican(ReplacementRule):
             return None
         if matches1 is None:
             return None
+        if instance["label"] == "REFUTES":
+            return None
 
         instance["claim"] = instance["claim"].replace("American","Canadian")
-        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        instance["label"] = "REFUTES"
         return instance
 
     def name(self):
@@ -326,10 +328,11 @@ class SimpleNegateBirth1(ReplacementRule):
             return None
         if instance["label"] == "NOT ENOUGH INFO":
             return None
-
+        if instance["label"] == "REFUTES":
+            return None
 
         instance["claim"] = instance["claim"].replace("born","not born")
-        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        instance["label"] = "REFUTES"
         return instance
 
     def name(self):
@@ -345,9 +348,10 @@ class SimpleNegateBirth2(ReplacementRule):
             return None
         if instance["label"] == "NOT ENOUGH INFO":
             return None
-
+        if instance["label"] == "REFUTES":
+            return None
         instance["claim"] = "{0} was never born".format(matches1.group(1).replace(".", ""))
-        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        instance["label"] = "REFUTES"
         return instance
 
     def name(self):
@@ -365,8 +369,11 @@ class SimpleNegateDeath1(ReplacementRule):
             return None
         if instance["label"] == "NOT ENOUGH INFO":
             return None
+        if instance["label"] == "REFUTES":
+            return None
+
         new_claim = "{0} is still alive".format(matches1.group(1).replace(".", ""))
-        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        instance["label"] = "REFUTES"
         instance["claim"] = new_claim
 
         return instance
@@ -382,8 +389,10 @@ class SimpleNegateDeath2(ReplacementRule):
             return None
         if instance["label"] == "NOT ENOUGH INFO":
             return None
+        if instance["label"] == "REFUTES":
+            return None
         new_claim = "{0} has not died".format(matches1.group(1).replace(".", ""))
-        instance["label"] = "REFUTES" if instance["label"] == "SUPPORTS" else "SUPPORTS"
+        instance["label"] = "REFUTES"
         instance["claim"] = new_claim
 
         return instance
