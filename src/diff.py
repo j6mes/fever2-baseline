@@ -20,13 +20,13 @@ if __name__ == "__main__":
         for idx,line in enumerate(old_file):
             claim = json.loads(line)
 
-            old_claims[claim["claim"]] = (line, idx)
+            old_claims[claim["claim"]] = (claim, idx)
 
     with open(args.new_file, "r") as new_file:
         for idx,line in enumerate(new_file):
             claim = json.loads(line)
 
-            new_claims[claim["claim"]] = (line,idx)
+            new_claims[claim["claim"]] = (claim,idx)
 
     print(len(new_claims.keys()))
     print(len(old_claims.keys()))
@@ -37,9 +37,9 @@ if __name__ == "__main__":
     with open(args.diff_new, "w+") as diff_file:
         for claim in diff:
             claim = new_claims[claim][0]
-            diff_file.write(json.dumps(claim)+'\n')
+            diff_file.write(json.dumps(claim)+"\n")
 
     with open(args.diff_minus, "w+") as diff_minus_file:
         for claim in tqdm(diff_minus):
             claim = old_claims[claim][0]
-            diff_minus_file.write(json.dumps(claim)+'\n')
+            diff_minus_file.write(json.dumps(claim)+"\n")
