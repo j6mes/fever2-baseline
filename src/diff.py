@@ -39,7 +39,7 @@ if __name__ == "__main__":
             claim = new_claims[claim][0]
             diff_file.write(json.dumps(claim)+'\n')
 
-    with open(args.diff_minus, "w+") as diff_minus:
+    with open(args.diff_minus, "w+") as diff_minus_file:
         for claim in tqdm(diff_minus):
             claim = old_claims[claim][0]
-            diff_minus.write(json.dumps(claim)+'\n')
+            diff_minus_file.write(json.dumps(claim)+'\n')
