@@ -32,7 +32,7 @@ if __name__ == "__main__":
     print(len(old_claims.keys()))
     print(len(set(new_claims.keys()).intersection(old_claims.keys())))
     diff = set(new_claims.keys()).difference(set(old_claims.keys()))
-    diff_minus = set(old_claims.keys()).intersection(set(new_claims.keys()))
+    diff_minus = set(new_claims.keys()).intersection(old_claims.keys())
 
     with open(args.diff_new, "w+") as diff_file:
         for claim in diff:
