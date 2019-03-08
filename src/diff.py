@@ -6,6 +6,7 @@ if __name__ == "__main__":
     parser.add_argument("--old-file", type=str)
     parser.add_argument("--new-file", type=str)
     parser.add_argument("--diff-new", type=str)
+    parser.add_argument("--diff-minus", type=str)
 
     args = parser.parse_args()
 
@@ -27,8 +28,14 @@ if __name__ == "__main__":
 
 
     diff = set(new_claims.keys()).difference(set(old_claims.keys()))
-
+    diff_minus = set(old_claims.keys()).intersection(set(new_claims.keys()))
+    
     with open(args.diff_new, "w+") as diff_file:
         for claim in diff:
             claim = new_claims[claim][0]
             diff_file.write(json.dumps(claim)+'\n')
+
+    with open(args.diff_minus, "w+") as diff_minus:
+        for claim in diff_minus:
+            claim = new_claims[claim][0]
+            diff_minus.write(json.dumps(claim)+'\n')
