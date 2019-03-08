@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     print(len(new_claims.keys()))
     print(len(old_claims.keys()))
-
+    print(len(set(new_claims.keys()).intersection(old_claims.keys())))
     diff = set(new_claims.keys()).difference(set(old_claims.keys()))
     diff_minus = set(old_claims.keys()).intersection(set(new_claims.keys()))
 
