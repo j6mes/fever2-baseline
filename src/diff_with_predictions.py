@@ -93,11 +93,8 @@ if __name__ == "__main__":
     with open(args.old_file_predictions, "r") as old_predictions_file:
         old_predictions = old_predictions_file.readlines()
 
-    print(len(new_claims.keys()))
-    print(len(old_claims.keys()))
-    print(len(set(new_claims.keys()).intersection(old_claims.keys())))
-    diff = OrderedSet(new_claims.keys()).difference(old_claims.keys())
-    diff_minus = OrderedSet(new_claims.keys()).intersection(old_claims.keys())
+    diff = OrderedSet(new_claims.keys()) - old_claims.keys()
+    diff_minus = OrderedSet(new_claims.keys()) & old_claims.keys()
 
     with open(args.diff_new, "w+") as diff_file:
         for claim in diff:
