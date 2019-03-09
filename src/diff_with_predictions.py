@@ -52,6 +52,6 @@ if __name__ == "__main__":
 
     with open(args.diff_minus_predictions, "w+") as diff_minus_predictions:
         for claim in tqdm(diff_minus):
-            idx = claim[1]
+            idx = old_claims[claim][1]
             print(idx)
             diff_minus_predictions.write(old_predictions[idx])
