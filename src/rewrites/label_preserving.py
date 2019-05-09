@@ -92,6 +92,12 @@ class LabelPreservingIsAReplacementRule5(ReplacementRule):
         if matches1 is None and matches2 is None:
             return None
 
+        doc = nlp(instance["claim"])
+        is_person = any([e.label_ in ["PER"] for e in doc.ents])
+
+        if is_person:
+            return None
+
         if matches1 is not None:
             new_claim = "There exists a {0}, it goes by the name of {1}.".format(matches1.group(2).replace(".",""),matches1.group(1))
         else:
@@ -113,10 +119,19 @@ class LabelPreservingIsAReplacementRule6(ReplacementRule):
         if matches1 is None and matches2 is None:
             return None
 
+        doc = nlp(instance["claim"])
+        is_person = any([e.label_ in ["PER"] for e in doc.ents])
+
         if matches1 is not None:
-            new_claim = "There is a {0}, it is called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
+            if is_person:
+                new_claim = "There is a {0}, they are called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
+            else:
+                new_claim = "There is a {0}, it is called {1}.".format(matches1.group(2).replace(".", ""), matches1.group(1))
         else:
-            new_claim = "There is an {0}, it is called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            if is_person:
+                new_claim = "There is an {0}, they are called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
+            else:
+                new_claim = "There is an {0}, it is called {1}.".format(matches2.group(2).replace(".", ""), matches2.group(1))
 
         instance["claim"] = new_claim
         return instance
@@ -189,7 +204,14 @@ class LabelPreservingWasAReplacementRule4(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
         if matches1 is None and matches2 is None:
+            return None
+
+        doc = nlp(instance["claim"])
+        is_person = any([e.label_ in ["PER"] for e in doc.ents])
+
+        if is_person:
             return None
 
         if matches1 is not None:
@@ -209,7 +231,14 @@ class LabelPreservingWasAReplacementRule5(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
         if matches1 is None and matches2 is None:
+            return None
+
+        doc = nlp(instance["claim"])
+        is_person = any([e.label_ in ["PER"] for e in doc.ents])
+
+        if is_person:
             return None
 
         if matches1 is not None:
@@ -230,7 +259,14 @@ class LabelPreservingWasAReplacementRule6(ReplacementRule):
     def _process(self, instance):
         matches1 = re.match(r"(.+) was a (.+)", instance["claim"])
         matches2 = re.match(r"(.+) was an (.+)", instance["claim"])
+
         if matches1 is None and matches2 is None:
+            return None
+
+        doc = nlp(instance["claim"])
+        is_person = any([e.label_ in ["PER"] for e in doc.ents])
+
+        if is_person:
             return None
 
         if matches1 is not None:
