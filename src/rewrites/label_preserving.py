@@ -120,7 +120,7 @@ class LabelPreservingIsAReplacementRule6(ReplacementRule):
             return None
 
         doc = nlp(instance["claim"])
-        is_person = any([e.label_ in ["PER"] for e in doc.ents])
+        is_person = any([e.label_ in ["PERSON"] for e in doc.ents])
 
         if matches1 is not None:
             if is_person:
