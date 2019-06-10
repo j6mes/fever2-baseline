@@ -37,7 +37,7 @@ for v in dev.values():
 test_claims = []
 for v in everything:
     if v not in dev_claims:
-        test_claims.extend(v)
+        test_claims.append(v)
 
 
 np.random.shuffle(dev_claims)
