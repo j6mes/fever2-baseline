@@ -21,7 +21,7 @@ for file in args.in_files.split(","):
 
 np.random.shuffle(claims)
 
-with open(args.test_file, "w+") as outfile:
+with open(args.out_file, "w+") as outfile:
     for id, line in enumerate(claims):
         line['id'] = id + 500000
         line["attack"] = "redacted"
